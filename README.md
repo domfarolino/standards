@@ -3,6 +3,10 @@ Notes to keep track of the things I learn while working on and learning about we
 
 # Working on Fetch domintro boxes
 
+> Learning about WebIDL [union-types](https://heycam.github.io/webidl/#idl-union), the
+> [es-union](https://heycam.github.io/webidl/#es-union) algorithm, and
+> [stringifiers](https://url.spec.whatwg.org/#URL-stringification-behavior).
+
 While working on the fetch standard's domintro boxes (https://github.com/whatwg/fetch/issues/543) I
 ran down a few rabbit holes. While reading the description of the
 [`Request`](https://fetch.spec.whatwg.org/#requests) object I had noticed it mentioned that a `Request`
@@ -25,24 +29,22 @@ Are the same as:
  - `fetch(new Request(new URL('https://domfarolino.com')))`
  - `fetch(new Request(new Request('https://domfarolino.com')))`
 
-At this point, my confusion about being able to pass in a string, a `URL` object, and a `Request` object still
-existed, but had just shifted focus to the `Request` constructor as opposed to the fetch API. What in spec-land
+At this point, my confusion about being able to pass in string, `URL`, and `Request` objects was still with me
+but had shifted focus to the `Request` constructor as opposed to the fetch API. What specifically in spec-land
 allows us to handle this? When looking at this constructor, I noticed that step 5 handles the case where `input`
-is a string, while step `6` handles the case where `input` is an object of type `Request`. So here I wondered how,
-if we accept strings and `Request` objects, are we able to accept something like a `URL` object. The answer is
-that WebIDL stringifies everything that gets passed into a method taking a `DOMString`/`USVString`, and the `URL`
-object has a custom [stringifier](https://url.spec.whatwg.org/#URL-stringification-behavior) which determines its
-value when coerced to a string.
+is a string, while step 6 handles the case where `input` is an object of type `Request`. So here I wondered how,
+if we accept string and `Request` objects, are we able to accept something like a `URL` object? The short answer
+is that WebIDL stringifies everything that gets passed into a method taking a `DOMString`/`USVString`. The `URL`
+object happens to have a custom [stringifier](https://url.spec.whatwg.org/#URL-stringification-behavior) which
+returns the `URL` `href` attribute upon string coercian. This is nice because it spits out a type that the `Request`
+constructor is designed to take.
 
-So the next question I had was "how would we ever be allowed to perform `step 6` in the `Request` constructor if
-request objects passed in could just be coerced to a string (via default stringification) since that's the first
-type of object we're looking for?". Well it seems that the `Request` constructor does indeed take multiple types
-of input objects, and it was pointed out to me that to convert an object in this type of scenario, the
-[ES-Union](https://heycam.github.io/webidl/#es-union) algorithm will be used. In short, this algorithm defines the
-steps to run when we convert an object to one of several target types as opposed to a single type. These target
-types are specified in WebIDL as a [union type](https://heycam.github.io/webidl/#idl-union). The `Request` class
-IDL in the fetch spec defines [RequestInfo](https://fetch.spec.whatwg.org/#requestinfo) as a union type of
-`Request or USVString`. The WebIDL es-union algorithm will first convert some object to a type found in the union
-of the Ecmascript object implements one of the types. As a result, we'll see if we'll if input objects to the
-`Request` constructor are also `Request` objects (step 4, substep 1) **before** we try converting to a string type
-(step 11).
+I was then curious as to what stopped *`Request`* objects being passed into the `Request` constructor from undergoing
+the same stringification as `URL` objects, since the string type is what we first look for. To understand this we have
+to look at the WebIDL [es-union](https://heycam.github.io/webidl/#es-union) algorithm. In short, this algorithm defines
+the steps to run when we convert an ECMAScript value to one of several IDL types single targeted type. These types are
+specified in WebIDL as a [union type](https://heycam.github.io/webidl/#idl-union). The `Request` class IDL in the fetch
+spec defines its `input` parameter as an object of type [RequestInfo](https://fetch.spec.whatwg.org/#requestinfo), which
+is a union type of `Request or USVString`. The reason `Request` objects are not stringified like `URL` objects are is due
+to step 4, substep 1 of the es-union algorithm. In short, this algorithm will favor interface types that ECMAScript object
+implements before trying to stringify.
