@@ -15,15 +15,15 @@ that whatever we passed in as `input` always went through the
 [`Request` constructor](https://fetch.spec.whatwg.org/#dom-request) to sort of sanitize the input. This means
 that the following calls to fetch:
 
- - fetch('https://domfarolino.com')
- - fetch(new URL('https://domfarolino.com'))
- - fetch(new Request('https://domfarolino.com'))
+ - `fetch('https://domfarolino.com')`
+ - `fetch(new URL('https://domfarolino.com'))`
+ - `fetch(new Request('https://domfarolino.com'))`
 
 Are the same as:
 
- - fetch(new Request('https://domfarolino.com'))
- - fetch(new Request(new URL('https://domfarolino.com')))
- - fetch(new Request(new Request('https://domfarolino.com')))
+ - `fetch(new Request('https://domfarolino.com'))`
+ - `fetch(new Request(new URL('https://domfarolino.com')))`
+ - `fetch(new Request(new Request('https://domfarolino.com')))`
 
 At this point, my confusion about being able to pass in a string, a `URL` object, and a `Request` object still
 existed, but had just shifted focus to the `Request` constructor as opposed to the fetch API. What in spec-land
