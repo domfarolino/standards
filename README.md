@@ -48,3 +48,16 @@ spec defines its `input` parameter as an object of type [RequestInfo](https://fe
 is a union type of `Request or USVString`. The reason `Request` objects are not stringified like `URL` objects are is due
 to step 4, substep 1 of the es-union algorithm. In short, this algorithm will favor interface types that ECMAScript object
 implements before trying to stringify.
+
+----
+
+I wondered what the purpose of `for=/` was in `<a for=/>referrer policy</a>`. After a quick read of the bikeshed
+documentation I learned that it was to link to a `<dfn>` which doesn't have a `for` attribute. We use it in cases
+where there exist ambiguous `<dfn>` tags. In this particular case, both the
+<a href=https://w3c.github.io/webappsec-referrer-policy/>referrer policy</a> and fetch specifications define the term
+**referrer policy**. The referrer policy spec defines [it](https://w3c.github.io/webappsec-referrer-policy/#referrer-policy)
+as a regular definition with no `for` attribute representing an enum, however fetch defines it as a concept associated with
+"`request`" objects. Therefore later in the spec when we are referring to a value that must be of type `referrer policy`
+(as in, a value that exists in the enum defined by the referrer policy spec) we must link our term to the correct definition
+since there is a little ambiguity. We don't want to refer to the concept associated with (`for`) "`request`" objects, so we
+explicitly tell bikeshed we want to be linked to the `<dfn>` that doesn't have a `for` attribute. Bam.
