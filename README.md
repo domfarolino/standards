@@ -51,6 +51,8 @@ implements before trying to stringify.
 
 ----
 
+# Miscellaneous
+
 I wondered what the purpose of `for=/` was in `<a for=/>referrer policy</a>`. After a quick read of the bikeshed
 documentation I learned that it was to link to a `<dfn>` which doesn't have a `for` attribute. We use it in cases
 where there exist ambiguous `<dfn>` tags. In this particular case, both the
