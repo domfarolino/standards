@@ -1,4 +1,5 @@
 # whatwg
+
 Notes to keep track of the things I learn while working on and learning about web standards
 
 # Working on Fetch domintro boxes
@@ -11,10 +12,10 @@ While working on the fetch standard's domintro boxes (https://github.com/whatwg/
 ran down a few rabbit holes. While reading the description of the
 [`Request`](https://fetch.spec.whatwg.org/#requests) object I had noticed it mentioned that a `Request`
 is the input to the fetch API. I had obviously used a regular string as the first (and sometimes only)
-parameter to the fetch API before as have many people, so upon reading the spec I was confused as to how
-this worked. I had also vaguely recalled seeing a `URL` object being used as the input parameter for the
-fetch API, which added to the confusion. A member of the whatwg organization pointed out over IRC that
-step 2 of the [fetch method](https://fetch.spec.whatwg.org/#fetch-method) section of the spec indicated
+parameter to the fetch API before as have many people, so upon reading the spec I was curious as to how
+this conversion was taking place. I had also vaguely recalled seeing a `URL` object being used as the input
+parameter for the fetch API, which added to the curiousity. A member of the WHATWG organization pointed out
+over IRC that step 2 of the [fetch method](https://fetch.spec.whatwg.org/#fetch-method) section of the spec indicated
 that whatever we passed in as `input` always went through the
 [`Request` constructor](https://fetch.spec.whatwg.org/#dom-request) to sort of sanitize the input. This means
 that the following calls to fetch:
@@ -29,14 +30,14 @@ Are the same as:
  - `fetch(new Request(new URL('https://domfarolino.com')))`
  - `fetch(new Request(new Request('https://domfarolino.com')))`
 
-At this point, my confusion about being able to pass in string, `URL`, and `Request` objects was still with me
+At this point my confusion about being able to pass in string, `URL`, and `Request` objects was still with me
 but had shifted focus to the `Request` constructor as opposed to the fetch API. What specifically in spec-land
 allows us to handle this? When looking at this constructor, I noticed that step 5 handles the case where `input`
 is a string, while step 6 handles the case where `input` is an object of type `Request`. So here I wondered how,
 if we accept string and `Request` objects, are we able to accept something like a `URL` object? The short answer
 is that WebIDL stringifies everything that gets passed into a method taking a `DOMString`/`USVString`. The `URL`
 object happens to have a custom [stringifier](https://url.spec.whatwg.org/#URL-stringification-behavior) which
-returns the `URL` `href` attribute upon string coercian. This is nice because it spits out a type that the `Request`
+returns the `URL`'s `href` attribute upon string coercian. This is nice because it spits out a type that the `Request`
 constructor is designed to take.
 
 I was then curious as to what stopped *`Request`* objects being passed into the `Request` constructor from undergoing
