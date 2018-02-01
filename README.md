@@ -1,6 +1,15 @@
 # whatwg
 
-Notes to keep track of the things I learn while working on and learning about web standards
+Notes to keep track of the things I learn while working on and learning about web standards. This repository
+largely contains information about things like [WebIDL](https://heycam.github.io/webidl/) and
+[Bikeshed](https://tabatkins.github.io/bikeshed/), but also houses some interesting historical standards decisions
+made by WHATWG and W3C. For example, see item #3 in the [Table of Contents](#table-of-contents).
+
+# Table of Contents:
+
+ - [Working on Fetch domintro boxes](#working-on-fetch-domintro-boxes)
+ - [Bikeshed `for=/`](#for)
+ - [Utility of Request mode and redirect internal slots](#utility-of-request-mode-and-redirect-internal-slots)
 
 # Working on Fetch domintro boxes
 
@@ -53,6 +62,7 @@ implements before trying to stringify.
 ----
 
 # `for=/`
+
 I wondered what the purpose of `for=/` was in `<a for=/>referrer policy</a>`. After a quick read of the bikeshed
 documentation I learned that it was to link to a `<dfn>` which doesn't have a `for` attribute. We use it in cases
 where there exist ambiguous `<dfn>` tags. In this particular case, both the
@@ -64,7 +74,12 @@ as a regular definition with no `for` attribute representing an enum, however fe
 since there is a little ambiguity. We don't want to refer to the concept associated with (`for`) "`request`" objects, so we
 explicitly tell bikeshed we want to be linked to the `<dfn>` that doesn't have a `for` attribute. Bam.
 
-# Utility of fetch `{mode: "no-cors"}` and `{redirect: "manual"}`
+----
+
+# Utility of Request `mode` and `redirect` internal slots
+
+> This is a short explanation on the utility of Request's `{mode: "no-cors"}` and `{redirect: "manual"}` settings in the
+> Fetch specification.
 
 While reading the fetch standard, I was wondering what the point of Requests with things like `{mode: "no-cors"}`,
 and `{redirect: "manual"}` were. Upon looking both things up independently, I learned that most had little or no
