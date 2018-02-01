@@ -1,0 +1,22 @@
+<pre class=metadata>
+Title: Journal of Web Standards Knowledge
+Status: LD
+URL: https://domfarolino.com/whatwg/
+Shortname: whatwg
+Editor: Dominic Farolino, domfarolino@gmail.com, https://domfarolino.com/
+Abstract: The production, maintenance, and nuances of Web Standards produced by the WHATWG and W3C can be tough to understand. This document attempts to provide a journal of knowledge I've found throughout my time working with and contributing to specifications.
+Indent: 2
+Editor Term: Author
+Default Ref Status: current
+Repository: domfarolino/whatwg
+Default Highlight: javascript
+</pre>
+
+<pre class=anchors>
+urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
+  text: union types
+</pre>
+
+<h3>Introduction</h3>
+
+<p>Hello this is some text</p>
