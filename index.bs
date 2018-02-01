@@ -1,0 +1,88 @@
+<pre class=metadata>
+Title: Journal of Web Standards Knowledge
+Status: LD
+URL: https://domfarolino.com/whatwg/
+Shortname: whatwg
+Editor: Dominic Farolino, domfarolino@gmail.com, https://domfarolino.com/
+Abstract: The production, maintenance, and nuances of Web Standards produced
+Abstract: by the WHATWG and W3C can be tough to understand. This document attempts
+Abstract: to provide a journal of knowledge I've found throughout my time working
+Abstract: with and contributing to specifications.
+Indent: 2
+Editor Term: Author, Authors
+Default Ref Status: current
+Markup Shorthands: markdown yes
+Repository: domfarolino/whatwg
+Default Highlight: javascript
+</pre>
+
+<pre class=link-defaults>
+spec:url; type:interface; text:URL
+</pre>
+
+<pre class=anchors>
+urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
+  text: union type; url: idl-union
+  text: es-union
+  text: DOMString; url: idl-DOMString
+  text: USVString; url: idl-USVString
+urlPrefix: https://url.spec.whatwg.org/; type: dfn; spec: URL;
+  text: URL-stringification-behavior
+  text: href; url: dom-url-href
+urlPrefix: https://fetch.spec.whatwg.org/; type: dfn; spec: FETCH;
+  text: request; url: concept-request
+  text: fetch; url: concept-fetch
+  text: fetch api; url: fetch-method
+</pre>
+
+<h2 id="intro">Working on Fetch domintro boxes</h2>
+
+<div class=note>
+
+Learning about WebIDL <a>union types</a>, the [=es-union=] algorithm, and 
+<a>stringifiers</a>.
+
+</div>
+
+While working on the fetch standard's domintro boxes [issue here](https://github.com/whatwg/fetch/issues/543) I
+ran down a few rabbit holes. While reading the description of the <a>request</a> object I noticed it mentioned
+that a <a>request</a> is the input to <a>fetch</a>. I had obviously used a regular string as the first (and sometimes only)
+parameter to the exposed <a>fetch API</a>, as have many people, so upon reading the spec I was curious as to how this
+conversion might take place. I had also vaguely recalled seeing some application code use a {{URL}} object as input to
+<a lt="fetch api">fetch</a>, which added to the curiousity.
+
+A member of the WHATWG organization pointed out over IRC that step 2 of the <a>fetch API</a> in the spec indicated that
+whatever we passed in as `input` always went through the {{Request()}} constructor to sort of "sanitize" the input. This
+means that the following calls to fetch:
+
+<pre><code class=javascript>
+fetch('https://domfarolino.com');
+fetch(new URL('https://domfarolino.com'));
+fetch(new Request('https://domfarolino.com'));
+</code></pre>
+
+Are effectively:
+
+<pre><code class=javascript>
+fetch(new Request('https://domfarolino.com'));
+fetch(new Request(new URL('https://domfarolino.com')));
+fetch(new Request(new Request('https://domfarolino.com')));
+</code></pre>
+
+At this point my confusion about being able to pass in string, {{URL}}, and {{Request}} objects was still with me
+but had shifted focus to the {{Request()}} constructor as opposed to the <a>fetch API</a>. What specifically in
+spec-land allows us to handle this? When looking at the {{Request()}} constructor, I noticed that step 5 handles
+the case where |input| is a string, while step 6 handles the case where |input| is a {{Request}} object. So here I
+wondered how, if we accept string and {{Request}} objects, are we able to accept something like a {{URL}} object?
+The short answer is that WebIDL stringifies everything that gets passed into a method taking a [=DOMString=] or [=USVString=].
+The {{URL}} object happens to have a custom <a>stringifier</a> which returns the {{URL}}'s {{URL/href}} attribute upon
+string coercian. This is nice because it spits out a type that the {{Request()}} constructor is designed to take.
+
+I was then curious as to what stopped {{Request}} objects being passed into the {{Request()}} constructor from undergoing
+the same stringification as {{URL}} objects, since the string type is what we first look for. To understand this we have
+to look at the WebIDL [=es-union=] algorithm. In short, this algorithm defines the steps to run when we convert an ECMAScript
+value to one of several IDL types single targeted type. These types are specified in WebIDL as a <a>union type</a>. The
+{{Request}} class IDL in the fetch spec defines its |input| parameter as an object of type {{RequestInfo}}, which
+is a union type of {{Request}} or {{USVString}}. The reason {{Request}} objects are not stringified like {{URL}} objects
+is due to step 4, substep 1 of the <a>es-union</a> algorithm. In short, this algorithm will favor interface types that
+ECMAScript object implements before trying to stringify.
