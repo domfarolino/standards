@@ -1177,8 +1177,8 @@ Possible extra rowspan handling
 	}
 </style>
   <meta content="Bikeshed version ba473502a120361710488ab9b7f538b47858631e" name="generator">
-  <link href="https://domfarolino.com/whatwg/" rel="canonical">
-  <meta content="9428361517505e268ad3db88ec71a566a345d783" name="document-revision">
+  <link href="https://domfarolino.com/standards/" rel="canonical">
+  <meta content="d98ed161e4e652f61031b3130e1c5c5d919470e0" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1388,13 +1388,13 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Journal of Web Standards Knowledge</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2018-02-01">1 February 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2018-02-02">2 February 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://domfarolino.com/whatwg/">https://domfarolino.com/whatwg/</a>
+     <dd><a class="u-url" href="https://domfarolino.com/standards/">https://domfarolino.com/standards/</a>
      <dt>Issue Tracking:
-     <dd><a href="https://github.com/domfarolino/whatwg/issues/">GitHub</a>
+     <dd><a href="https://github.com/domfarolino/standards/issues/">GitHub</a>
      <dt>Author:
      <dd>
       <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="https://domfarolino.com/">Dominic Farolino</a> <a class="u-email email" href="mailto:domfarolino@gmail.com">domfarolino@gmail.com</a>
@@ -1403,7 +1403,7 @@ pre .property::before, pre .property::after {
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 1 February 2018,
+In addition, as of 2 February 2018,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1411,17 +1411,27 @@ Parts of this work may be from another specification document.  If so, those par
   </div>
   <div class="p-summary" data-fill-with="abstract">
    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
-   <p>The production, maintenance, and nuances of Web Standards produced
+   <p>The production, maintenance, and nuances of Web standards can be
 
-by the WHATWG and W3C can be tough to understand. This document attempts
-to provide a journal of knowledge I’ve found throughout my time working
-with and contributing to specifications.</p>
+tough to understand. This document attempts to provide a journal
+of knowledge I’ve accumulated throughout my time working on Web
+standards. So far I’ve contributed to the HTML Standard, the Fetch
+Standard, and Chromium, and am an editor of the Console Standard.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
    <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
    <ol class="toc" role="directory">
-    <li><a href="#intro"><span class="secno">1</span> <span class="content">Working on Fetch domintro boxes</span></a>
+    <li>
+     <a href="#working-on-fetch-domintro-boxes"><span class="secno">1</span> <span class="content">Working on Fetch domintro Boxes</span></a>
+     <ol class="toc">
+      <li><a href="#fetch-accepts-multiple-types-of-input"><span class="secno">1.1</span> <span class="content"><span>Fetch</span> accepts multiple types of input</span></a>
+      <li><a href="#the-request-constructor-accepts-multiple-types-of-input"><span class="secno">1.2</span> <span class="content">The <code class="idl"><span>Request()</span></code> constructor accepts multiple types of input</span></a>
+      <li><a href="#hello-stringifier"><span class="secno">1.3</span> <span class="content">Hello <span>stringifier</span></span></a>
+      <li><a href="#"><span class="secno">1.4</span> <span class="content">Converting an ECMAScript value to an IDL <span>union type</span></span></a>
+     </ol>
+    <li><a href="#utility-of-request-mode-no-cors-and-redirect-manual"><span class="secno">2</span> <span class="content">Utility of <code class="idl"><span>Request</span></code> <code class="highlight"><span class="p">{</span><span class="s2">"mode"</span><span class="o">:</span> <span class="s2">"no-cors"</span><span class="p">}</span></code> and <code class="highlight"><span class="p">{</span><span class="s2">"redirect"</span><span class="o">:</span> <span class="s2">"manual"</span><span class="p">}</span></code></span></a>
+    <li><a href="#bikeshed-linking-primer"><span class="secno">3</span> <span class="content">Bikeshed linking primer</span></a>
     <li><a href="#conformance"><span class="secno"></span> <span class="content"> Conformance</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1436,16 +1446,15 @@ with and contributing to specifications.</p>
    </ol>
   </nav>
   <main>
-   <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Working on Fetch domintro boxes</span><a class="self-link" href="#intro"></a></h2>
-   <div class="note" role="note">
-    <p>Learning about WebIDL <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-union" id="ref-for-idl-union">union types</a>, the <a data-link-type="dfn" href="https://heycam.github.io/webidl/#es-union" id="ref-for-es-union">es-union</a> algorithm, and <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-stringifier" id="ref-for-dfn-stringifier">stringifiers</a>.</p>
-   </div>
-   <p>While working on the fetch standard’s domintro boxes <a href="https://github.com/whatwg/fetch/issues/543">issue here</a> I
+   <h2 class="heading settled" data-level="1" id="working-on-fetch-domintro-boxes"><span class="secno">1. </span><span class="content">Working on Fetch domintro Boxes</span><a class="self-link" href="#working-on-fetch-domintro-boxes"></a></h2>
+   <p>This section focuses on WebIDL <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-union-type" id="ref-for-dfn-union-type">union types</a>, the <a data-link-type="dfn" href="https://heycam.github.io/webidl/#es-union" id="ref-for-es-union">es-union</a> algorithm, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#stringifier" id="ref-for-stringifier">stringifiers</a>.</p>
+   <h3 class="heading settled" data-level="1.1" id="fetch-accepts-multiple-types-of-input"><span class="secno">1.1. </span><span class="content"><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch">Fetch</a> accepts multiple types of input</span><a class="self-link" href="#fetch-accepts-multiple-types-of-input"></a></h3>
+   <p>While working on the Fetch Standard’s domintro boxes (<a href="https://github.com/whatwg/fetch/issues/543">issue here</a>) I
 ran down a few rabbit holes. While reading the description of the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request">request</a> object I noticed it mentioned
-that a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> is the input to <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch">fetch</a>. I had obviously used a regular string as the first (and sometimes only)
-parameter to the exposed <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#fetch-method" id="ref-for-fetch-method">fetch API</a>, as have many people, so upon reading the spec I was curious as to how this
-conversion might take place. I had also vaguely recalled seeing some application code use a <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url">URL</a></code> object as input to <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#fetch-method" id="ref-for-fetch-method①">fetch</a>, which added to the curiousity.</p>
-   <p>A member of the WHATWG organization pointed out over IRC that step 2 of the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#fetch-method" id="ref-for-fetch-method②">fetch API</a> in the spec indicated that
+that a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-request" id="ref-for-concept-request①">request</a> is the input to <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-fetch" id="ref-for-concept-fetch①">fetch</a>. I had obviously used a regular string as the first
+(and sometimes only) parameter to the exposed <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch">fetch()</a></code> <a class="idl-code" data-link-type="method" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch①">fetch</a> API, as have many people, so upon reading the spec I was
+curious as to how this conversion might take place. I had also vaguely recalled seeing some application code use a <code class="idl"><a data-link-type="idl">URL</a></code> object as input to <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#service-worker-global-scope-fetch-event" id="ref-for-service-worker-global-scope-fetch-event">fetch</a></code>, which added to the curiousity.</p>
+   <p>A member of the WHATWG organization pointed out over IRC that step 2 of the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch②">fetch()</a></code> in the spec indicated that
 whatever we passed in as <code class="highlight">input</code> always went through the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request">Request()</a></code> constructor to sort of "sanitize" the input. This
 means that the following calls to fetch:</p>
 <pre class="highlight"><code class="javascript highlight">fetch<span class="p"><span class="p">(</span></span><span class="s1"><span class="s1">'https://domfarolino.com'</span></span><span class="p"><span class="p">);</span></span>
@@ -1457,21 +1466,59 @@ fetch<span class="p"><span class="p">(</span></span><span class="k"><span class=
 fetch<span class="p"><span class="p">(</span></span><span class="k"><span class="k">new</span></span> Request<span class="p"><span class="p">(</span></span><span class="k"><span class="k">new</span></span> URL<span class="p"><span class="p">(</span></span><span class="s1"><span class="s1">'https://domfarolino.com'</span></span><span class="p"><span class="p">)));</span></span>
 fetch<span class="p"><span class="p">(</span></span><span class="k"><span class="k">new</span></span> Request<span class="p"><span class="p">(</span></span><span class="k"><span class="k">new</span></span> Request<span class="p"><span class="p">(</span></span><span class="s1"><span class="s1">'https://domfarolino.com'</span></span><span class="p"><span class="p">)));</span></span>
 </code></pre>
-   <p>At this point my confusion about being able to pass in string, <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url①">URL</a></code>, and <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request">Request</a></code> objects was still with me
-but had shifted focus to the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request①">Request()</a></code> constructor as opposed to the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#fetch-method" id="ref-for-fetch-method③">fetch API</a>. What specifically in
-spec-land allows us to handle this? When looking at the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request②">Request()</a></code> constructor, I noticed that step 5 handles
+   <h3 class="heading settled" data-level="1.2" id="the-request-constructor-accepts-multiple-types-of-input"><span class="secno">1.2. </span><span class="content">The <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request①">Request()</a></code> constructor accepts multiple types of input</span><a class="self-link" href="#the-request-constructor-accepts-multiple-types-of-input"></a></h3>
+   <p>At this point my confusion about being able to pass in string, <code class="idl"><a data-link-type="idl">URL</a></code>, and <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request">Request</a></code> objects was still with me
+but had shifted focus to the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request②">Request()</a></code> constructor as opposed to the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch③">fetch()</a></code> API. What specifically in
+spec-land allows us to handle this? When looking at the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request③">Request()</a></code> constructor, I noticed that step 5 handles
 the case where <var>input</var> is a string, while step 6 handles the case where <var>input</var> is a <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request①">Request</a></code> object. So here I
-wondered how, if we accept string and <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request②">Request</a></code> objects, are we able to accept something like a <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url②">URL</a></code> object?
-The short answer is that WebIDL stringifies everything that gets passed into a method taking a <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString">DOMString</a> or <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString">USVString</a>.
-The <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url③">URL</a></code> object happens to have a custom <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-stringifier" id="ref-for-dfn-stringifier①">stringifier</a> which returns the <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url④">URL</a></code>'s <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#dom-url-href" id="ref-for-dom-url-href">href</a></code> attribute upon
-string coercian. This is nice because it spits out a type that the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request③">Request()</a></code> constructor is designed to take.</p>
-   <p>I was then curious as to what stopped <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request③">Request</a></code> objects being passed into the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request④">Request()</a></code> constructor from undergoing
-the same stringification as <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url⑤">URL</a></code> objects, since the string type is what we first look for. To understand this we have
+wondered how, if we accept string and <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request②">Request</a></code> objects, are we able to accept something like a <code class="idl"><a data-link-type="idl">URL</a></code> object?</p>
+   <h3 class="heading settled" data-level="1.3" id="hello-stringifier"><span class="secno">1.3. </span><span class="content">Hello <a data-link-type="dfn" href="https://url.spec.whatwg.org/#stringifier" id="ref-for-stringifier①">stringifier</a></span><a class="self-link" href="#hello-stringifier"></a></h3>
+   <p>The short answer is that WebIDL stringifies everything that gets passed into a method taking a <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString">DOMString</a> or <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString">USVString</a>.
+The <code class="idl"><a data-link-type="idl">URL</a></code> object happens to have a custom <a data-link-type="dfn" href="https://url.spec.whatwg.org/#stringifier" id="ref-for-stringifier②">stringifier</a> which returns the <code class="idl"><a data-link-type="idl">URL</a></code>'s <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#dom-url-href" id="ref-for-dom-url-href">href</a></code> attribute upon
+string coercian. This is nice because it spits out a type that the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request④">Request()</a></code> constructor is designed to take.</p>
+   <h3 class="heading settled" data-level="1.4" id=""><span class="secno">1.4. </span><span class="content">Converting an ECMAScript value to an IDL <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-union-type" id="ref-for-dfn-union-type①">union type</a></span><a class="self-link" href="#"></a></h3>
+   <p>I was then curious as to what stopped <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request③">Request</a></code> objects being passed into the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request⑤">Request()</a></code> constructor from undergoing
+the same stringification as <code class="idl"><a data-link-type="idl">URL</a></code> objects, since the string type is what we first look for. To understand this we have
 to look at the WebIDL <a data-link-type="dfn" href="https://heycam.github.io/webidl/#es-union" id="ref-for-es-union①">es-union</a> algorithm. In short, this algorithm defines the steps to run when we convert an ECMAScript
-value to one of several IDL types single targeted type. These types are specified in WebIDL as a <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-union" id="ref-for-idl-union①">union type</a>. The <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request④">Request</a></code> class IDL in the fetch spec defines its <var>input</var> parameter as an object of type <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#requestinfo" id="ref-for-requestinfo">RequestInfo</a></code>, which
-is a union type of <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request⑤">Request</a></code> or <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString①">USVString</a></code>. The reason <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request⑥">Request</a></code> objects are not stringified like <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#url" id="ref-for-url⑥">URL</a></code> objects
+value to one of several IDL types single targeted type. These types are specified in WebIDL as a <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-union-type" id="ref-for-dfn-union-type②">union type</a>. The <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request④">Request</a></code> class IDL in the fetch spec defines its <var>input</var> parameter as an object of type <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#requestinfo" id="ref-for-requestinfo">RequestInfo</a></code>, which
+is a union type of <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request⑤">Request</a></code> or <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString①">USVString</a></code>. The reason <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request⑥">Request</a></code> objects are not stringified like <code class="idl"><a data-link-type="idl">URL</a></code> objects
 is due to step 4, substep 1 of the <a data-link-type="dfn" href="https://heycam.github.io/webidl/#es-union" id="ref-for-es-union②">es-union</a> algorithm. In short, this algorithm will favor interface types that
 ECMAScript object implements before trying to stringify.</p>
+   <h2 class="heading settled" data-level="2" id="utility-of-request-mode-no-cors-and-redirect-manual"><span class="secno">2. </span><span class="content">Utility of <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request⑦">Request</a></code> <code class="highlight"><span class="p">{</span><span class="s2">"mode"</span><span class="o">:</span> <span class="s2">"no-cors"</span><span class="p">}</span></code> and <code class="highlight"><span class="p">{</span><span class="s2">"redirect"</span><span class="o">:</span> <span class="s2">"manual"</span><span class="p">}</span></code></span><a class="self-link" href="#utility-of-request-mode-no-cors-and-redirect-manual"></a></h2>
+   <p class="note" role="note">Note, more to come.</p>
+   <h2 class="heading settled" data-level="3" id="bikeshed-linking-primer"><span class="secno">3. </span><span class="content">Bikeshed linking primer</span><a class="self-link" href="#bikeshed-linking-primer"></a></h2>
+   <p class="note" role="note">Note, this section will both consume and expand upon the current <a href="https://github.com/domfarolino/standards#for">text</a> explaining Bikeshed’s <code class="highlight"><span class="k">for</span><span class="o">=</span>/</code> usage.
+It is very much a work-in-progress.</p>
+   <div class="example" id="example-b5f53f6f">
+    <a class="self-link" href="#example-b5f53f6f"></a> <code class="highlight"><span class="p">[</span><span class="o">=</span>response<span class="o">/</span>url<span class="o">=</span><span class="p">]</span></code> 
+    <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url">url</a></p>
+   </div>
+   <div class="example" id="example-4a4a4724">
+    <a class="self-link" href="#example-4a4a4724"></a> <code class="highlight"><span class="o">&lt;</span>a <span class="k">for</span><span class="o">=</span>response<span class="o">></span>url<span class="o">&lt;</span>/a></code> 
+    <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url①">url</a></p>
+   </div>
+   <div class="example" id="example-254aafa7">
+    <a class="self-link" href="#example-254aafa7"></a> <code class="highlight"><span class="p">{{</span>Response<span class="p">()}}</span></code> 
+    <p><code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-response" id="ref-for-dom-response">Response()</a></code></p>
+   </div>
+   <div class="example" id="example-c4a7b6e8">
+    <a class="self-link" href="#example-c4a7b6e8"></a> <code class="highlight"><span class="o">&lt;</span>code<span class="o">>&lt;</span>a <span class="k">for</span><span class="o">=</span>Response<span class="o">></span>Response<span class="p">()</span><span class="o">&lt;</span>/a>&lt;/code></code> 
+    <p><code class="highlight"><a data-link-type="functionish" href="https://fetch.spec.whatwg.org/#dom-response" id="ref-for-dom-response①">Response<span class="p">()</span></a></code></p>
+   </div>
+   <div class="example" id="example-1dea46c4">
+    <a class="self-link" href="#example-1dea46c4"></a> <code class="highlight"><span class="o">&lt;</span>code<span class="o">>&lt;</span>a constructor <span class="k">for</span><span class="o">=</span>Response<span class="o">></span>Response<span class="p">()</span><span class="o">&lt;</span>/a>&lt;/code></code> 
+    <p><code class="highlight"><a class="idl-code" data-link-type="constructor" href="https://fetch.spec.whatwg.org/#dom-response" id="ref-for-dom-response②">Response<span class="p">()</span></a></code></p>
+   </div>
+   <div class="example" id="example-a51bb200">
+    <a class="self-link" href="#example-a51bb200"></a> <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#service-worker-global-scope-fetch-event" id="ref-for-service-worker-global-scope-fetch-event①">fetch</a></code> (this automatically links to the definition of type <code class="highlight">event</code> in the ServiceWorker Specification 
+    <p><code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch④">fetch()</a></code> (putting parens around this restricts the linking to one of the IDL types (interface, method, dictionary, etc)
+as the Bikeshed spec points out <a href="https://tabatkins.github.io/bikeshed/#autolinking">here</a> (let’s take care of this link in the <code class="highlight">pre <span class="kr">class</span><span class="o">=</span>anchors</code> section :).
+Also we should verify this information.</p>
+   </div>
+   <div class="example" id="example-5422b74c">
+    <a class="self-link" href="#example-5422b74c"></a> <a class="idl-code" data-link-type="method" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch⑤">fetch()</a> 
+    <p><a class="idl-code" data-link-type="method" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch⑥">fetch()</a></p>
+   </div>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -1628,15 +1675,22 @@ ECMAScript object implements before trying to stringify.</p>
      <li><a href="https://fetch.spec.whatwg.org/#request">Request</a>
      <li><a href="https://fetch.spec.whatwg.org/#dom-request">Request(input, init)</a>
      <li><a href="https://fetch.spec.whatwg.org/#requestinfo">RequestInfo</a>
+     <li><a href="https://fetch.spec.whatwg.org/#dom-response">Response(body, init)</a>
      <li><a href="https://fetch.spec.whatwg.org/#concept-fetch">fetch</a>
-     <li><a href="https://fetch.spec.whatwg.org/#fetch-method">fetch api</a>
+     <li><a href="https://fetch.spec.whatwg.org/#dom-global-fetch">fetch(input)</a>
      <li><a href="https://fetch.spec.whatwg.org/#concept-request">request</a>
+     <li><a href="https://fetch.spec.whatwg.org/#concept-response-url">url</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[service-workers-1]</a> defines the following terms:
+    <ul>
+     <li><a href="https://w3c.github.io/ServiceWorker/#service-worker-global-scope-fetch-event">fetch</a>
     </ul>
    <li>
     <a data-link-type="biblio">[URL]</a> defines the following terms:
     <ul>
-     <li><a href="https://url.spec.whatwg.org/#url">URL</a>
      <li><a href="https://url.spec.whatwg.org/#dom-url-href">href</a>
+     <li><a href="https://url.spec.whatwg.org/#stringifier">stringifier</a>
     </ul>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
@@ -1644,8 +1698,7 @@ ECMAScript object implements before trying to stringify.</p>
      <li><a href="https://heycam.github.io/webidl/#idl-USVString">USVString</a>
      <li><a href="https://heycam.github.io/webidl/#idl-DOMString">domstring</a>
      <li><a href="https://heycam.github.io/webidl/#es-union">es-union</a>
-     <li><a href="https://heycam.github.io/webidl/#dfn-stringifier">stringifier</a>
-     <li><a href="https://heycam.github.io/webidl/#idl-union">union type</a>
+     <li><a href="https://heycam.github.io/webidl/#dfn-union-type">union type</a>
      <li><a href="https://heycam.github.io/webidl/#idl-USVString">usvstring</a>
     </ul>
   </ul>
@@ -1656,6 +1709,8 @@ ECMAScript object implements before trying to stringify.</p>
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/">Fetch Standard</a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-service-workers-1">[SERVICE-WORKERS-1]
+   <dd>Alex Russell; et al. <a href="https://w3c.github.io/ServiceWorker/">Service Workers 1</a>. URL: <a href="https://w3c.github.io/ServiceWorker/">https://w3c.github.io/ServiceWorker/</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
    <dt id="biblio-webidl">[WebIDL]

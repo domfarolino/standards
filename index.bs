@@ -1,57 +1,51 @@
 <pre class=metadata>
 Title: Journal of Web Standards Knowledge
 Status: LD
-URL: https://domfarolino.com/whatwg/
-Shortname: whatwg
+URL: https://domfarolino.com/standards/
+Shortname: Standards
 Editor: Dominic Farolino, domfarolino@gmail.com, https://domfarolino.com/
-Abstract: The production, maintenance, and nuances of Web Standards produced
-Abstract: by the WHATWG and W3C can be tough to understand. This document attempts
-Abstract: to provide a journal of knowledge I've found throughout my time working
-Abstract: with and contributing to specifications.
+Abstract: The production, maintenance, and nuances of Web standards can be
+Abstract: tough to understand. This document attempts to provide a journal
+Abstract: of knowledge I've accumulated throughout my time working on Web
+Abstract: standards. So far I've contributed to the HTML Standard, the Fetch
+Abstract: Standard, and Chromium, and am an editor of the Console Standard.
 Indent: 2
 Editor Term: Author, Authors
 Default Ref Status: current
 Markup Shorthands: markdown yes
-Repository: domfarolino/whatwg
+Repository: domfarolino/standards
 Default Highlight: javascript
 </pre>
 
 <pre class=link-defaults>
-spec:url; type:interface; text:URL
+spec: URL; type: interface; text: URL
 </pre>
 
 <pre class=anchors>
 urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
-  text: union type; url: idl-union
+  text: union type; url: dfn-union-type
   text: es-union
   text: DOMString; url: idl-DOMString
   text: USVString; url: idl-USVString
 urlPrefix: https://url.spec.whatwg.org/; type: dfn; spec: URL;
-  text: URL-stringification-behavior
   text: href; url: dom-url-href
-urlPrefix: https://fetch.spec.whatwg.org/; type: dfn; spec: FETCH;
-  text: request; url: concept-request
-  text: fetch; url: concept-fetch
-  text: fetch api; url: fetch-method
+  text: stringifier
 </pre>
 
-<h2 id="intro">Working on Fetch domintro boxes</h2>
+<h2 id="working-on-fetch-domintro-boxes">Working on Fetch domintro Boxes</h2>
 
-<div class=note>
+This section focuses on WebIDL <a>union types</a>, the [=es-union=] algorithm, and <a>stringifiers</a>.
 
-Learning about WebIDL <a>union types</a>, the [=es-union=] algorithm, and 
-<a>stringifiers</a>.
+<h3 class="heading" id="fetch-accepts-multiple-types-of-input"><a for=/ lt=fetch>Fetch</a> accepts multiple types of input</h3>
 
-</div>
+While working on the Fetch Standard's domintro boxes ([issue here](https://github.com/whatwg/fetch/issues/543)) I
+ran down a few rabbit holes. While reading the description of the <a for=/>request</a> object I noticed it mentioned
+that a <a for=/>request</a> is the input to <a for=/>fetch</a>. I had obviously used a regular string as the first
+(and sometimes only) parameter to the exposed {{fetch()}} <a method lt=fetch(input)>fetch</a> API, as have many people, so upon reading the spec I was
+curious as to how this conversion might take place. I had also vaguely recalled seeing some application code use a
+{{URL}} object as input to {{fetch}}, which added to the curiousity.
 
-While working on the fetch standard's domintro boxes [issue here](https://github.com/whatwg/fetch/issues/543) I
-ran down a few rabbit holes. While reading the description of the <a>request</a> object I noticed it mentioned
-that a <a>request</a> is the input to <a>fetch</a>. I had obviously used a regular string as the first (and sometimes only)
-parameter to the exposed <a>fetch API</a>, as have many people, so upon reading the spec I was curious as to how this
-conversion might take place. I had also vaguely recalled seeing some application code use a {{URL}} object as input to
-<a lt="fetch api">fetch</a>, which added to the curiousity.
-
-A member of the WHATWG organization pointed out over IRC that step 2 of the <a>fetch API</a> in the spec indicated that
+A member of the WHATWG organization pointed out over IRC that step 2 of the {{fetch()}} in the spec indicated that
 whatever we passed in as `input` always went through the {{Request()}} constructor to sort of "sanitize" the input. This
 means that the following calls to fetch:
 
@@ -69,14 +63,21 @@ fetch(new Request(new URL('https://domfarolino.com')));
 fetch(new Request(new Request('https://domfarolino.com')));
 </code></pre>
 
+<h3 class="heading" id="the-request-constructor-accepts-multiple-types-of-input">The {{Request()}} constructor accepts multiple types of input</h3>
+
 At this point my confusion about being able to pass in string, {{URL}}, and {{Request}} objects was still with me
-but had shifted focus to the {{Request()}} constructor as opposed to the <a>fetch API</a>. What specifically in
+but had shifted focus to the {{Request()}} constructor as opposed to the {{fetch()}} API. What specifically in
 spec-land allows us to handle this? When looking at the {{Request()}} constructor, I noticed that step 5 handles
 the case where |input| is a string, while step 6 handles the case where |input| is a {{Request}} object. So here I
 wondered how, if we accept string and {{Request}} objects, are we able to accept something like a {{URL}} object?
+
+<h3 class="heading" id="hello-stringifier">Hello [=stringifier=]</h3>
+
 The short answer is that WebIDL stringifies everything that gets passed into a method taking a [=DOMString=] or [=USVString=].
 The {{URL}} object happens to have a custom <a>stringifier</a> which returns the {{URL}}'s {{URL/href}} attribute upon
 string coercian. This is nice because it spits out a type that the {{Request()}} constructor is designed to take.
+
+<h3 class="heading" id="">Converting an ECMAScript value to an IDL [=union type=]</h3>
 
 I was then curious as to what stopped {{Request}} objects being passed into the {{Request()}} constructor from undergoing
 the same stringification as {{URL}} objects, since the string type is what we first look for. To understand this we have
@@ -86,3 +87,58 @@ value to one of several IDL types single targeted type. These types are specifie
 is a union type of {{Request}} or {{USVString}}. The reason {{Request}} objects are not stringified like {{URL}} objects
 is due to step 4, substep 1 of the <a>es-union</a> algorithm. In short, this algorithm will favor interface types that
 ECMAScript object implements before trying to stringify.
+
+<h2 class="heading" id="utility-of-request-mode-no-cors-and-redirect-manual">Utility of {{Request}} <code>{"mode": "no-cors"}</code> and <code>{"redirect": "manual"}</code></h2>
+
+<p class=note>Note, more to come.</p>
+
+<h2 class="heading" id="bikeshed-linking-primer">Bikeshed linking primer</h2>
+
+<p class=note>Note, this section will both consume and expand upon the current
+[text](https://github.com/domfarolino/standards#for) explaining Bikeshed's <code>for=/</code> usage.
+It is very much a work-in-progress.</p>
+
+<div class=example>
+`[=response/url=]`
+
+[=response/url=]
+</div>
+
+<div class=example>
+`<a for=response>url</a>`
+
+<a for=response>url</a>
+</div>
+
+<div class=example>
+`{{Response()}}`
+
+{{Response()}}
+</div>
+
+<div class=example>
+`<code><a for=Response>Response()</a></code>`
+
+<code><a for=Response>Response()</a></code>
+</div>
+
+<div class=example>
+`<code><a constructor for=Response>Response()</a></code>`
+
+<code><a constructor for=Response>Response()</a></code>
+</div>
+
+<div class=example>
+{{fetch}} (this automatically links to the definition of type <code>event</code> in the ServiceWorker Specification
+
+{{fetch()}} (putting parens around this restricts the linking to one of the IDL types (interface, method, dictionary, etc)
+as the Bikeshed spec points out
+[here](https://tabatkins.github.io/bikeshed/#autolinking) (let's take care of this link in the <code>pre class=anchors</code> section :).
+Also we should verify this information.
+</div>
+
+<div class=example>
+<a method lt="fetch(input)">fetch()</a>
+
+<a method lt="fetch(input)" for=WindowOrWorkerGlobalScope>fetch()</a>
+</div>
