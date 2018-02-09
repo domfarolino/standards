@@ -25,8 +25,6 @@ spec: URL; type: interface; text: URL
 urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
   text: union type; url: dfn-union-type
   text: es-union
-  text: DOMString; url: idl-DOMString
-  text: USVString; url: idl-USVString
 urlPrefix: https://url.spec.whatwg.org/; type: dfn; spec: URL;
   text: href; url: dom-url-href
   text: stringifier
@@ -73,7 +71,7 @@ wondered how, if we accept string and {{Request}} objects, are we able to accept
 
 <h3 class="heading" id="hello-stringifier">Hello [=stringifier=]</h3>
 
-The short answer is that WebIDL stringifies everything that gets passed into a method taking a [=DOMString=] or [=USVString=].
+The short answer is that WebIDL stringifies everything that gets passed into a method taking a {{DOMString}} or {{USVString}}.
 The {{URL}} object happens to have a custom <a>stringifier</a> which returns the {{URL}}'s {{URL/href}} attribute upon
 string coercian. This is nice because it spits out a type that the {{Request()}} constructor is designed to take.
 

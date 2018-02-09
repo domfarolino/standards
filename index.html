@@ -1176,9 +1176,8 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version ba473502a120361710488ab9b7f538b47858631e" name="generator">
+  <meta content="Bikeshed version 166744eb86a34dbc5493268ea410dc65275aa964" name="generator">
   <link href="https://domfarolino.com/standards/" rel="canonical">
-  <meta content="d98ed161e4e652f61031b3130e1c5c5d919470e0" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1388,7 +1387,7 @@ pre .property::before, pre .property::after {
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Journal of Web Standards Knowledge</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2018-02-02">2 February 2018</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Living Document, <time class="dt-updated" datetime="2018-02-08">8 February 2018</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1403,7 +1402,7 @@ pre .property::before, pre .property::after {
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 2 February 2018,
+In addition, as of 8 February 2018,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -1473,7 +1472,7 @@ spec-land allows us to handle this? When looking at the <code class="idl"><a dat
 the case where <var>input</var> is a string, while step 6 handles the case where <var>input</var> is a <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request①">Request</a></code> object. So here I
 wondered how, if we accept string and <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#request" id="ref-for-request②">Request</a></code> objects, are we able to accept something like a <code class="idl"><a data-link-type="idl">URL</a></code> object?</p>
    <h3 class="heading settled" data-level="1.3" id="hello-stringifier"><span class="secno">1.3. </span><span class="content">Hello <a data-link-type="dfn" href="https://url.spec.whatwg.org/#stringifier" id="ref-for-stringifier①">stringifier</a></span><a class="self-link" href="#hello-stringifier"></a></h3>
-   <p>The short answer is that WebIDL stringifies everything that gets passed into a method taking a <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString">DOMString</a> or <a data-link-type="dfn" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString">USVString</a>.
+   <p>The short answer is that WebIDL stringifies everything that gets passed into a method taking a <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-DOMString" id="ref-for-idl-DOMString">DOMString</a></code> or <code class="idl"><a data-link-type="idl" href="https://heycam.github.io/webidl/#idl-USVString" id="ref-for-idl-USVString">USVString</a></code>.
 The <code class="idl"><a data-link-type="idl">URL</a></code> object happens to have a custom <a data-link-type="dfn" href="https://url.spec.whatwg.org/#stringifier" id="ref-for-stringifier②">stringifier</a> which returns the <code class="idl"><a data-link-type="idl">URL</a></code>'s <code class="idl"><a data-link-type="idl" href="https://url.spec.whatwg.org/#dom-url-href" id="ref-for-dom-url-href">href</a></code> attribute upon
 string coercian. This is nice because it spits out a type that the <code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-request" id="ref-for-dom-request④">Request()</a></code> constructor is designed to take.</p>
    <h3 class="heading settled" data-level="1.4" id=""><span class="secno">1.4. </span><span class="content">Converting an ECMAScript value to an IDL <a data-link-type="dfn" href="https://heycam.github.io/webidl/#dfn-union-type" id="ref-for-dfn-union-type①">union type</a></span><a class="self-link" href="#"></a></h3>
@@ -1489,16 +1488,16 @@ ECMAScript object implements before trying to stringify.</p>
    <h2 class="heading settled" data-level="3" id="bikeshed-linking-primer"><span class="secno">3. </span><span class="content">Bikeshed linking primer</span><a class="self-link" href="#bikeshed-linking-primer"></a></h2>
    <p class="note" role="note">Note, this section will both consume and expand upon the current <a href="https://github.com/domfarolino/standards#for">text</a> explaining Bikeshed’s <code class="highlight"><span class="k">for</span><span class="o">=</span>/</code> usage.
 It is very much a work-in-progress.</p>
-   <div class="example" id="example-b5f53f6f">
-    <a class="self-link" href="#example-b5f53f6f"></a> <code class="highlight"><span class="p">[</span><span class="o">=</span>response<span class="o">/</span>url<span class="o">=</span><span class="p">]</span></code> 
+   <div class="example" id="example-a8147a69">
+    <a class="self-link" href="#example-a8147a69"></a> <code class="highlight"><span class="p">[</span><span class="o">=</span>response<span class="o">/</span>url<span class="o">=</span><span class="p">]</span></code> 
     <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url">url</a></p>
    </div>
    <div class="example" id="example-4a4a4724">
     <a class="self-link" href="#example-4a4a4724"></a> <code class="highlight"><span class="o">&lt;</span>a <span class="k">for</span><span class="o">=</span>response<span class="o">></span>url<span class="o">&lt;</span>/a></code> 
     <p><a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#concept-response-url" id="ref-for-concept-response-url①">url</a></p>
    </div>
-   <div class="example" id="example-254aafa7">
-    <a class="self-link" href="#example-254aafa7"></a> <code class="highlight"><span class="p">{{</span>Response<span class="p">()}}</span></code> 
+   <div class="example" id="example-53e4f21c">
+    <a class="self-link" href="#example-53e4f21c"></a> <code class="highlight"><span class="p">{{</span>Response<span class="p">()}}</span></code> 
     <p><code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-response" id="ref-for-dom-response">Response()</a></code></p>
    </div>
    <div class="example" id="example-c4a7b6e8">
@@ -1509,8 +1508,8 @@ It is very much a work-in-progress.</p>
     <a class="self-link" href="#example-1dea46c4"></a> <code class="highlight"><span class="o">&lt;</span>code<span class="o">>&lt;</span>a constructor <span class="k">for</span><span class="o">=</span>Response<span class="o">></span>Response<span class="p">()</span><span class="o">&lt;</span>/a>&lt;/code></code> 
     <p><code class="highlight"><a class="idl-code" data-link-type="constructor" href="https://fetch.spec.whatwg.org/#dom-response" id="ref-for-dom-response②">Response<span class="p">()</span></a></code></p>
    </div>
-   <div class="example" id="example-a51bb200">
-    <a class="self-link" href="#example-a51bb200"></a> <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#service-worker-global-scope-fetch-event" id="ref-for-service-worker-global-scope-fetch-event①">fetch</a></code> (this automatically links to the definition of type <code class="highlight">event</code> in the ServiceWorker Specification 
+   <div class="example" id="example-535074f8">
+    <a class="self-link" href="#example-535074f8"></a> <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/ServiceWorker/#service-worker-global-scope-fetch-event" id="ref-for-service-worker-global-scope-fetch-event①">fetch</a></code> (this automatically links to the definition of type <code class="highlight">event</code> in the ServiceWorker Specification 
     <p><code class="idl"><a data-link-type="idl" href="https://fetch.spec.whatwg.org/#dom-global-fetch" id="ref-for-dom-global-fetch④">fetch()</a></code> (putting parens around this restricts the linking to one of the IDL types (interface, method, dictionary, etc)
 as the Bikeshed spec points out <a href="https://tabatkins.github.io/bikeshed/#autolinking">here</a> (let’s take care of this link in the <code class="highlight">pre <span class="kr">class</span><span class="o">=</span>anchors</code> section :).
 Also we should verify this information.</p>
@@ -1695,11 +1694,10 @@ Also we should verify this information.</p>
    <li>
     <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
     <ul>
+     <li><a href="https://heycam.github.io/webidl/#idl-DOMString">DOMString</a>
      <li><a href="https://heycam.github.io/webidl/#idl-USVString">USVString</a>
-     <li><a href="https://heycam.github.io/webidl/#idl-DOMString">domstring</a>
      <li><a href="https://heycam.github.io/webidl/#es-union">es-union</a>
      <li><a href="https://heycam.github.io/webidl/#dfn-union-type">union type</a>
-     <li><a href="https://heycam.github.io/webidl/#idl-USVString">usvstring</a>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -1710,7 +1708,7 @@ Also we should verify this information.</p>
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-service-workers-1">[SERVICE-WORKERS-1]
-   <dd>Alex Russell; et al. <a href="https://w3c.github.io/ServiceWorker/">Service Workers 1</a>. URL: <a href="https://w3c.github.io/ServiceWorker/">https://w3c.github.io/ServiceWorker/</a>
+   <dd>Alex Russell; et al. <a href="https://w3c.github.io/ServiceWorker/v1/">Service Workers 1</a>. URL: <a href="https://w3c.github.io/ServiceWorker/v1/">https://w3c.github.io/ServiceWorker/v1/</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
    <dt id="biblio-webidl">[WebIDL]
