@@ -1,13 +1,12 @@
-# whatwg
+# standards
 
-Things I learn while working on Web standards. This repository largely contains information about
+Things I learn while working on web standards. This repository largely contains information about
 things like [WebIDL](https://heycam.github.io/webidl/) and [Bikeshed](https://tabatkins.github.io/bikeshed/),
 but also houses some interesting historical standards decisions made by WHATWG and W3C. For example,
 see item #3 in the [Table of Contents](#table-of-contents).
 
 # Table of Contents:
 
- - [Working on Fetch domintro boxes](https://domfarolino.com/standards/#working-on-fetch-domintro-boxes)
  - [Bikeshed `for=/`](#for)
  - [Utility of Request mode and redirect internal slots](#utility-of-request-mode-and-redirect-internal-slots)
 
