@@ -18,7 +18,7 @@ Default Highlight: javascript
 </pre>
 
 <pre class=link-defaults>
-spec: URL; type: interface; text: URL
+spec: url; type: interface; text: URL
 </pre>
 
 <pre class=anchors>
@@ -26,7 +26,6 @@ urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
   text: union type; url: dfn-union-type
   text: es-union
 urlPrefix: https://url.spec.whatwg.org/; type: dfn; spec: URL;
-  text: href; url: dom-url-href
   text: stringifier
 </pre>
 
