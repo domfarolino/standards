@@ -27,16 +27,22 @@ urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
   text: es-union
 urlPrefix: https://url.spec.whatwg.org/; type: dfn; spec: URL;
   text: stringifier
-urlPrefix: https://tc39.github.io/ecma262/#; spec: ECMASCRIPT; type: dfn
-  text: Essential Internal Methods; url: table-5
-  text: 6.1.7.2 Object Internal Methods and Internal Slots; url: sec-object-internal-methods-and-internal-slots
-  text: Ordinary Objects; url: ordinary-objects
-  text: 9.1 Ordinary Object Internal Methods and Internal Slots; url: sec-ordinary-object-internal-methods-and-internal-slots
-  text: Exotic Objects; url: sec-built-in-exotic-object-internal-methods-and-slots
-  text: Array Exotic Objects; url: sec-array-exotic-objects
-  text: data properties; url: table-2
-  text: accessor properties; url: table-3
-  text: Function Objects; url: sec-ecmascript-function-objects
+urlPrefix: https://tc39.github.io/ecma262/#; spec: ECMASCRIPT;
+  type: dfn
+    text: Essential Internal Methods; url: table-5
+    text: 6.1.7.2 Object Internal Methods and Internal Slots; url: sec-object-internal-methods-and-internal-slots
+    text: Ordinary Objects; url: ordinary-objects
+    text: 9.1 Ordinary Object Internal Methods and Internal Slots; url: sec-ordinary-object-internal-methods-and-internal-slots
+    text: Exotic Objects; url: sec-built-in-exotic-object-internal-methods-and-slots
+    text: Array Exotic Objects; url: sec-array-exotic-objects
+    text: data properties; url: table-2
+    text: accessor properties; url: table-3
+    text: Function Objects; url: function-object
+  type: abstract-op
+    text: Get; url: sec-get-o-p
+  type: method
+    text: [[Get]]; url: sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver
+    text: [[Call]]; url: sec-built-in-function-objects-call-thisargument-argumentslist
 </pre>
 
 <h2 id="working-on-fetch-domintro-boxes">Working on Fetch domintro Boxes</h2>
@@ -126,21 +132,21 @@ That last part about the context of [=Ordinary Objects=] is important because [=
 Before the list of [=Essential Internal Methods=], I noticed the description of property descriptors gave and explained attributes (think of
 attributes as internal slots that represent exposed Object properties, in this case, properties of property descriptors) associated with both
 [=data properties=] and [=accessor properties=]. It might be a little confusing that \[[Get]] and \[[Set]] attributes were described here before
-the \[[Get]] and \[[Set]] Essential Internal Methods. This made me think "Hmm, that must mean there can be at most like..two (different) \[[Get]]s performed when accessing a property, right?".
+the \[[Get]] and \[[Set]] [=Essential Internal Methods=]. This made me think "Hmm, that must mean there can be at most like..two (different) \[[Get]]s
+performed when accessing a property, right?".
 
-The answer is **yes** because we might first perform a \[[Get]] on some object, invoking its
-[Get](https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver) internal method, which yields a
-property descriptor. Said returned property descriptor might further be an accessor
-property. If so, it will have a \[[Get]] attribute (internal slot) which is a function, |F|. We'll then want to call |F|.\[[Call]]() in order to invoke
-the getter to retrieve the value it should return. Note \[[Call]] is not an Essential Internal Method, but instead an internal method that appears on
-all [function objects](https://tc39.github.io/ecma262/#table-6).
+The answer is **yes** because we might first invoke the [$Get$] abstract operation on some object, thus invoking it's {{[[Get]]}} internal method,
+which would encounter a property descriptor. Said property descriptor may further be an accessor property, and if so, it will have a \[[Get]] attribute
+(internal slot) whose value is a function, |F|. We'll then want to call |F|.{{[[Call]]}} in order to invoke the getter function to retrieve the value we
+should finally return. Note {{[[Call]]}} is an [=Essential Internal Method=] that appears only on [=function objects=].
 
-This all makes sense, and clears up any confusion the description of the \[[Get]] Essential Internal Method might cause:
+This all makes sense, and clears up any confusion the description of the {{[[Get]]}} [=Essential Internal Method=] might cause:
 
 <img width=100% src="https://user-images.githubusercontent.com/9669289/37074472-0425f4d6-219b-11e8-9086-292aa4e0ba55.png" alt="[[Get]] description">
 
 The bit saying "If any ECMAScript code must be executed to retrieve the property value, ..." was confusing to me before I understood that the actual
-definition of the \[[Get]] internal method required the execution of a function object in the case where the key was accociated with an accessor property.
+definition of the {{[[Get]]}} internal method required the execution of a [=function object=] in the case where the key was accociated with an accessor
+property.
 
 <!--
 <h2 class="heading" id="bikeshed-linking-primer">Bikeshed linking primer</h2>

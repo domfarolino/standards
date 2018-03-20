@@ -1178,7 +1178,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version d377965d771c89e5a624bbce80b9382913b6aed7" name="generator">
   <link href="https://domfarolino.com/standards/" rel="canonical">
-  <meta content="d58cfbd161b21afb219a1108964e053ca260bed7" name="document-revision">
+  <meta content="32bb7681506fb43b2c8f56cd37295f7939a4fa15" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1508,16 +1508,17 @@ Except for that internal method, Array exotic objects provide all of the other e
    <h3 class="heading settled" data-level="3.2" id="get-and-set-on-accessor-properties"><span class="secno">3.2. </span><span class="content">[[Get]] and [[Set]] on accessor properties</span><a class="self-link" href="#get-and-set-on-accessor-properties"></a></h3>
    <p>Before the list of <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#table-5" id="ref-for-table-5③">Essential Internal Methods</a>, I noticed the description of property descriptors gave and explained attributes (think of
 attributes as internal slots that represent exposed Object properties, in this case, properties of property descriptors) associated with both <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#table-2" id="ref-for-table-2">data properties</a> and <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#table-3" id="ref-for-table-3">accessor properties</a>. It might be a little confusing that [[Get]] and [[Set]] attributes were described here before
-the [[Get]] and [[Set]] Essential Internal Methods. This made me think "Hmm, that must mean there can be at most like..two (different) [[Get]]s performed when accessing a property, right?".</p>
-   <p>The answer is <strong>yes</strong> because we might first perform a [[Get]] on some object, invoking its <a href="https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver">Get</a> internal method, which yields a
-property descriptor. Said returned property descriptor might further be an accessor
-property. If so, it will have a [[Get]] attribute (internal slot) which is a function, <var>F</var>. We’ll then want to call <var>F</var>.[[Call]]() in order to invoke
-the getter to retrieve the value it should return. Note [[Call]] is not an Essential Internal Method, but instead an internal method that appears on
-all <a href="https://tc39.github.io/ecma262/#table-6">function objects</a>.</p>
-   <p>This all makes sense, and clears up any confusion the description of the [[Get]] Essential Internal Method might cause:</p>
+the [[Get]] and [[Set]] <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#table-5" id="ref-for-table-5④">Essential Internal Methods</a>. This made me think "Hmm, that must mean there can be at most like..two (different) [[Get]]s
+performed when accessing a property, right?".</p>
+   <p>The answer is <strong>yes</strong> because we might first invoke the <a data-link-type="abstract-op" href="https://tc39.github.io/ecma262/#sec-get-o-p" id="ref-for-sec-get-o-p">Get</a> abstract operation on some object, thus invoking it’s <code class="idl"><a data-link-type="idl" href="https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver" id="ref-for-sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver">[[Get]]</a></code> internal method,
+which would encounter a property descriptor. Said property descriptor may further be an accessor property, and if so, it will have a [[Get]] attribute
+(internal slot) whose value is a function, <var>F</var>. We’ll then want to call <var>F</var>.<code class="idl"><a data-link-type="idl" href="https://tc39.github.io/ecma262/#sec-built-in-function-objects-call-thisargument-argumentslist" id="ref-for-sec-built-in-function-objects-call-thisargument-argumentslist">[[Call]]</a></code> in order to invoke the getter function to retrieve the value we
+should finally return. Note <code class="idl"><a data-link-type="idl" href="https://tc39.github.io/ecma262/#sec-built-in-function-objects-call-thisargument-argumentslist" id="ref-for-sec-built-in-function-objects-call-thisargument-argumentslist①">[[Call]]</a></code> is an <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#table-5" id="ref-for-table-5⑤">Essential Internal Method</a> that appears only on <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#function-object" id="ref-for-function-object">function objects</a>.</p>
+   <p>This all makes sense, and clears up any confusion the description of the <code class="idl"><a data-link-type="idl" href="https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver" id="ref-for-sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver①">[[Get]]</a></code> <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#table-5" id="ref-for-table-5⑥">Essential Internal Method</a> might cause:</p>
    <p><img alt="[[Get]] description" src="https://user-images.githubusercontent.com/9669289/37074472-0425f4d6-219b-11e8-9086-292aa4e0ba55.png" width="100%"></p>
    <p>The bit saying "If any ECMAScript code must be executed to retrieve the property value, ..." was confusing to me before I understood that the actual
-definition of the [[Get]] internal method required the execution of a function object in the case where the key was accociated with an accessor property.</p>
+definition of the <code class="idl"><a data-link-type="idl" href="https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver" id="ref-for-sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver②">[[Get]]</a></code> internal method required the execution of a <a data-link-type="dfn" href="https://tc39.github.io/ecma262/#function-object" id="ref-for-function-object①">function object</a> in the case where the key was accociated with an accessor
+property.</p>
   </main>
   <div data-fill-with="conformance">
    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content"> Conformance</span><a class="self-link" href="#conformance"></a></h2>
@@ -1673,11 +1674,15 @@ definition of the [[Get]] internal method required the execution of a function o
     <ul>
      <li><a href="https://tc39.github.io/ecma262/#sec-object-internal-methods-and-internal-slots">6.1.7.2 object internal methods and internal slots</a>
      <li><a href="https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots">9.1 ordinary object internal methods and internal slots</a>
+     <li><a href="https://tc39.github.io/ecma262/#sec-get-o-p">Get</a>
+     <li><a href="https://tc39.github.io/ecma262/#sec-built-in-function-objects-call-thisargument-argumentslist">[[Call]]</a>
+     <li><a href="https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver">[[Get]]</a>
      <li><a href="https://tc39.github.io/ecma262/#table-3">accessor properties</a>
      <li><a href="https://tc39.github.io/ecma262/#sec-array-exotic-objects">array exotic objects</a>
      <li><a href="https://tc39.github.io/ecma262/#table-2">data properties</a>
      <li><a href="https://tc39.github.io/ecma262/#table-5">essential internal methods</a>
      <li><a href="https://tc39.github.io/ecma262/#sec-built-in-exotic-object-internal-methods-and-slots">exotic objects</a>
+     <li><a href="https://tc39.github.io/ecma262/#function-object">function objects</a>
      <li><a href="https://tc39.github.io/ecma262/#ordinary-objects">ordinary objects</a>
     </ul>
    <li>
