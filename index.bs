@@ -40,6 +40,7 @@ urlPrefix: https://tc39.github.io/ecma262/#; spec: ECMASCRIPT;
     text: Function Objects; url: function-object
   type: abstract-op
     text: Get; url: sec-get-o-p
+    text: Call; url: sec-call
   type: method
     text: [[Get]]; url: sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver
     text: [[Call]]; url: sec-built-in-function-objects-call-thisargument-argumentslist
@@ -108,20 +109,21 @@ ECMAScript object implements before trying to stringify.
 <h2 class="heading" id="a-bit-on-ecmascript-object-essential-internal-methods">A bit on ECMAScript Object Essential Internal Methods</h2>
 
 <p class=note>Note, this section may be generalized in the future to include more information on exotic objects, which would warrant the
-title of this section changing to `A bit on ECMAScript Object Internal Methods`, with the *Essential Internal Methods* being a specific subsection.</p>
+title of this section changing to `A bit on ECMAScript Object Internal Methods`, with *Essential Internal Methods and Internal Slots* being
+a more specific subsection.</p>
 
 <h3 class="heading" id="essential-internal-methods-and-internal-slots">Essential Internal Methods and Internal Slots</h3>
 
 The spec states that the semantics of objects in ECMAScript are specified by algorithms called internal methods. These internal methods
-are used by other algorithms to operate on various objects. Internal slots also exist to give internal state to objects housing them. Both internal
-methods and slots are not exposed object properties, as they're internal. Their names are enclosed in square brackets `[[]]`.
+are invoked by other algorithms. Internal slots also exist to give internal state to objects housing them. Both internal methods and slots
+are not exposed object properties, as they're internal. Their names are enclosed in square brackets `[[]]`.
 
 A list and description of the [=Essential Internal Methods=] that every object has (implements) can be found under
 [=6.1.7.2 Object Internal Methods and Internal Slots=]. What's cool is that a corresponding algorithmic definition for each
 [=Essential Internal Method=] (in the context of an [=Ordinary Object=]) can be found in [=9.1 Ordinary Object Internal Methods and Internal Slots=].
 
 That last part about the context of [=Ordinary Objects=] is important because [=Ordinary Objects=] provide the default definition of an
-[=Essential Internal Methods=], as [=Exotic Objects=] may provide their own varying definition of some of the Essential Internal Methods
+[=Essential Internal Methods=], while [=Exotic Objects=] may provide their own varying definition of some of the [=Essential Internal Methods=]
 (among other exotic-specific internal methods). For example, see [=Array Exotic Objects=].
 
 > Array exotic objects provide an alternative definition for the \[[DefineOwnProperty]] internal method.
@@ -135,17 +137,23 @@ attributes as internal slots that represent exposed Object properties, in this c
 the \[[Get]] and \[[Set]] [=Essential Internal Methods=]. This made me think "Hmm, that must mean there can be at most like..two (different) \[[Get]]s
 performed when accessing a property, right?".
 
-The answer is **yes** because we might first invoke the [$Get$] abstract operation on some object, thus invoking it's {{[[Get]]}} internal method,
+The answer is **yes**, and let's see why. We might want to invoke the [$Get$] abstract operation on some object, thus invoking it's {{[[Get]]}} internal method,
 which would encounter a property descriptor. Said property descriptor may further be an accessor property, and if so, it will have a \[[Get]] attribute
 (internal slot) whose value is a function, |F|. We'll then want to call |F|.{{[[Call]]}} in order to invoke the getter function to retrieve the value we
-should finally return. Note {{[[Call]]}} is an [=Essential Internal Method=] that appears only on [=function objects=].
+should finally return.
 
-This all makes sense, and clears up any confusion the description of the {{[[Get]]}} [=Essential Internal Method=] might cause:
+<p class=note>Note, {{[[Call]]}} is an [=Essential Internal Method=] that appears only on [=function objects=].</p>
+
+<p class=note>Note, we don't actually call |F|.{{[[Call]]}} directly in {{[[Get]]}}, but instead indirectly do so by first
+invoking the [$Call$] abstract operation on |F|. I believe this is a common pattern so that internal methods can remain polymorphic
+(for example, the object is exotic and provides its own version of some [=Essential Internal Method=]) but I'm not sure.</p>
+
+This all makes sense, and clears up any confusion that the description of the {{[[Get]]}} [=Essential Internal Method=] might cause:
 
 <img width=100% src="https://user-images.githubusercontent.com/9669289/37074472-0425f4d6-219b-11e8-9086-292aa4e0ba55.png" alt="[[Get]] description">
 
-The bit saying "If any ECMAScript code must be executed to retrieve the property value, ..." was confusing to me before I understood that the actual
-definition of the {{[[Get]]}} internal method required the execution of a [=function object=] in the case where the key was accociated with an accessor
+The bit saying "If any ECMAScript code must be executed to retrieve the property value, ..." might be confusing before realizing that the actual
+definition of the {{[[Get]]}} internal method indeed executes a [=function object=] in the case where the key was accociated with an accessor
 property.
 
 <!--
