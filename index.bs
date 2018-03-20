@@ -1,14 +1,14 @@
 <pre class=metadata>
-Title: Journal of Web Standards Knowledge
+Title: Web Standards Journal
 Status: LD
 URL: https://domfarolino.com/standards/
 Shortname: Standards
-Editor: Dominic Farolino, domfarolino@gmail.com, https://domfarolino.com/
-Abstract: The production, maintenance, and nuances of Web standards can be
+Editor: Dominic Farolino, Microsoft https://microsoft.com/, https://domfarolino.com/, domfarolino@gmail.com
+Abstract: The production, maintenance, and nuances of web standards can be
 Abstract: tough to understand. This document attempts to provide a journal
-Abstract: of knowledge I've accumulated throughout my time working on Web
+Abstract: of knowledge I've accumulated throughout my time working on web
 Abstract: standards. So far I've contributed to the HTML Standard, the Fetch
-Abstract: Standard, and Chromium, and am an editor of the Console Standard.
+Abstract: Standard, Chromium, and am an editor of the Console Standard.
 Indent: 2
 Editor Term: Author, Authors
 Default Ref Status: current
@@ -27,13 +27,23 @@ urlPrefix: https://heycam.github.io/webidl/; type: dfn; spec: WEBIDL
   text: es-union
 urlPrefix: https://url.spec.whatwg.org/; type: dfn; spec: URL;
   text: stringifier
+urlPrefix: https://tc39.github.io/ecma262/#; spec: ECMASCRIPT; type: dfn
+  text: Essential Internal Methods; url: table-5
+  text: 6.1.7.2 Object Internal Methods and Internal Slots; url: sec-object-internal-methods-and-internal-slots
+  text: Ordinary Objects; url: ordinary-objects
+  text: 9.1 Ordinary Object Internal Methods and Internal Slots; url: sec-ordinary-object-internal-methods-and-internal-slots
+  text: Exotic Objects; url: sec-built-in-exotic-object-internal-methods-and-slots
+  text: Array Exotic Objects; url: sec-array-exotic-objects
+  text: data properties; url: table-2
+  text: accessor properties; url: table-3
+  text: Function Objects; url: sec-ecmascript-function-objects
 </pre>
 
 <h2 id="working-on-fetch-domintro-boxes">Working on Fetch domintro Boxes</h2>
 
 This section focuses on WebIDL <a>union types</a>, the [=es-union=] algorithm, and <a>stringifiers</a>.
 
-<h3 class="heading" id="fetch-accepts-multiple-types-of-input"><a for=/ lt=fetch>Fetch</a> accepts multiple types of input</h3>
+<h3 class="heading" id="fetch-accepts-multiple-types-of-input"><a for=/ lt=fetch>Fetch</a> accepting multiple types of input</h3>
 
 While working on the Fetch Standard's domintro boxes ([issue here](https://github.com/whatwg/fetch/issues/543)) I
 ran down a few rabbit holes. While reading the description of the <a for=/>request</a> object I noticed it mentioned
@@ -74,7 +84,7 @@ The short answer is that WebIDL stringifies everything that gets passed into a m
 The {{URL}} object happens to have a custom <a>stringifier</a> which returns the {{URL}}'s {{URL/href}} attribute upon
 string coercian. This is nice because it spits out a type that the {{Request()}} constructor is designed to take.
 
-<h3 class="heading" id="">Converting an ECMAScript value to an IDL [=union type=]</h3>
+<h3 class="heading" id="converting-an-ecmascript-value-to-an-idl-union-type">Converting an ECMAScript value to an IDL [=union type=]</h3>
 
 I was then curious as to what stopped {{Request}} objects being passed into the {{Request()}} constructor from undergoing
 the same stringification as {{URL}} objects, since the string type is what we first look for. To understand this we have
@@ -85,10 +95,54 @@ is a union type of {{Request}} or {{USVString}}. The reason {{Request}} objects 
 is due to step 4, substep 1 of the <a>es-union</a> algorithm. In short, this algorithm will favor interface types that
 ECMAScript object implements before trying to stringify.
 
-<h2 class="heading" id="utility-of-request-mode-no-cors-and-redirect-manual">Utility of {{Request}} <code>{"mode": "no-cors"}</code> and <code>{"redirect": "manual"}</code></h2>
+<h2 class="heading" id="utility-of-request-mode-no-cors-and-redirect-manual">Utility of {{Request}} `{"mode": "no-cors"}` and `{"redirect": "manual"}`</h2>
 
 <p class=note>Note, more to come.</p>
 
+<h2 class="heading" id="a-bit-on-ecmascript-object-essential-internal-methods">A bit on ECMAScript Object Essential Internal Methods</h2>
+
+<p class=note>Note, this section may be generalized in the future to include more information on exotic objects, which would warrant the
+title of this section changing to `A bit on ECMAScript Object Internal Methods`, with the *Essential Internal Methods* being a specific subsection.</p>
+
+<h3 class="heading" id="essential-internal-methods-and-internal-slots">Essential Internal Methods and Internal Slots</h3>
+
+The spec states that the semantics of objects in ECMAScript are specified by algorithms called internal methods. These internal methods
+are used by other algorithms to operate on various objects. Internal slots also exist to give internal state to objects housing them. Both internal
+methods and slots are not exposed object properties, as they're internal. Their names are enclosed in square brackets `[[]]`.
+
+A list and description of the [=Essential Internal Methods=] that every object has (implements) can be found under
+[=6.1.7.2 Object Internal Methods and Internal Slots=]. What's cool is that a corresponding algorithmic definition for each
+[=Essential Internal Method=] (in the context of an [=Ordinary Object=]) can be found in [=9.1 Ordinary Object Internal Methods and Internal Slots=].
+
+That last part about the context of [=Ordinary Objects=] is important because [=Ordinary Objects=] provide the default definition of an
+[=Essential Internal Methods=], as [=Exotic Objects=] may provide their own varying definition of some of the Essential Internal Methods
+(among other exotic-specific internal methods). For example, see [=Array Exotic Objects=].
+
+> Array exotic objects provide an alternative definition for the \[[DefineOwnProperty]] internal method.
+> Except for that internal method, Array exotic objects provide all of the other essential internal methods as specified in 9.1.
+
+<h3 class="heading" id="get-and-set-on-accessor-properties">\[[Get]] and \[[Set]] on accessor properties</h3>
+
+Before the list of [=Essential Internal Methods=], I noticed the description of property descriptors gave and explained attributes (think of
+attributes as internal slots that represent exposed Object properties, in this case, properties of property descriptors) associated with both
+[=data properties=] and [=accessor properties=]. It might be a little confusing that \[[Get]] and \[[Set]] attributes were described here before
+the \[[Get]] and \[[Set]] Essential Internal Methods. This made me think "Hmm, that must mean there can be at most like..two (different) \[[Get]]s performed when accessing a property, right?".
+
+The answer is **yes** because we might first perform a \[[Get]] on some object, invoking its
+[Get](https://tc39.github.io/ecma262/#sec-ordinary-object-internal-methods-and-internal-slots-get-p-receiver) internal method, which yields a
+property descriptor. Said returned property descriptor might further be an accessor
+property. If so, it will have a \[[Get]] attribute (internal slot) which is a function, |F|. We'll then want to call |F|.\[[Call]]() in order to invoke
+the getter to retrieve the value it should return. Note \[[Call]] is not an Essential Internal Method, but instead an internal method that appears on
+all [function objects](https://tc39.github.io/ecma262/#table-6).
+
+This all makes sense, and clears up any confusion the description of the \[[Get]] Essential Internal Method might cause:
+
+<img width=100% src="https://user-images.githubusercontent.com/9669289/37074472-0425f4d6-219b-11e8-9086-292aa4e0ba55.png" alt="[[Get]] description">
+
+The bit saying "If any ECMAScript code must be executed to retrieve the property value, ..." was confusing to me before I understood that the actual
+definition of the \[[Get]] internal method required the execution of a function object in the case where the key was accociated with an accessor property.
+
+<!--
 <h2 class="heading" id="bikeshed-linking-primer">Bikeshed linking primer</h2>
 
 <p class=note>Note, this section will both consume and expand upon the current
@@ -139,3 +193,4 @@ Also we should verify this information.
 
 <a method lt="fetch(input)" for=WindowOrWorkerGlobalScope>fetch()</a>
 </div>
+-->
