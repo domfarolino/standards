@@ -3,6 +3,9 @@ SHELL=/bin/bash -o pipefail
 local: index.bs
 	bikeshed spec index.bs index.html
 
+watch: index.bs
+	bikeshed watch index.bs index.html
+
 remote: index.bs
 	curl https://api.csswg.org/bikeshed/ -f -F file=@index.bs > index.html
 
